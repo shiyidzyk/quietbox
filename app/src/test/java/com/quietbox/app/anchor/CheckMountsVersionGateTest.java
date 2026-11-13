@@ -1,3 +1,4 @@
+// AI生成
 package com.quietbox.app.anchor;
 
 import static org.junit.Assert.assertEquals;
@@ -37,8 +38,8 @@ public class CheckMountsVersionGateTest {
 
     private static final String SCRIPT_RELATIVE = "tools/check-mounts.sh";
     private static final String ANCHORS_RELATIVE = "app/src/main/resources/anchors.json";
-    private static final String EXPECTED_VERSION = "9.53.0";
-    private static final String DRIFTED_VERSION = "9.54.0";
+    private static final String EXPECTED_VERSION = "9.54.0";
+    private static final String DRIFTED_VERSION = "9.55.0";
 
     private static final Pattern APP_VERSION =
             Pattern.compile("\"appVersion\"\\s*:\\s*\"([^\"]+)\"");
