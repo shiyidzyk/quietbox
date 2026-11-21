@@ -9,7 +9,9 @@
 > ⚠️ 本项目与小红书官方无任何关联，仅供学习、研究和个人设备使用。
 > 使用前请阅读文末的[免责声明](#免责声明)。
 
-**仓库**：<https://github.com/yigenhuobah/quietbox> ｜ **下载**：[Releases](https://github.com/yigenhuobah/quietbox/releases) ｜ **反馈**：[Issues](https://github.com/yigenhuobah/quietbox/issues/new/choose)
+**仓库**：<https://github.com/shiyidzyk/quietbox> ｜ **下载**：[Releases](https://github.com/shiyidzyk/quietbox/releases) ｜ **反馈**：[Issues](https://github.com/shiyidzyk/quietbox/issues/new/choose)
+
+> 原作者仓库 `yigenhuobah/quietbox` 已不可访问（404），本 fork 为当前唯一分发点。
 
 更新日志见 [CHANGELOG.md](CHANGELOG.md)。
 
@@ -103,7 +105,7 @@ PV-03 另有一个子选项「同时删除 xsec_token」，不单独编号，依
 
 ## 安装
 
-1. 从 [Releases](https://github.com/yigenhuobah/quietbox/releases) 下载 `quietbox-x.y.z.apk` 并安装。
+1. 从 [Releases](https://github.com/shiyidzyk/quietbox/releases) 下载最新 `quietbox-x.y.z.apk`（当前为 `quietbox-0.9.10-xhs954.apk`）并安装。
 2. 打开 **LSPosed 管理器**，在模块列表里启用「静盒」。
 3. 进入模块的作用域设置，勾选 **小红书**（`com.xingin.xhs`）。
 4. 打开「静盒」，确认顶部显示 **已激活**，且副标题包含 **已注入小红书**。
