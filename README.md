@@ -106,6 +106,8 @@ PV-03 另有一个子选项「同时删除 xsec_token」，不单独编号，依
 ## 安装
 
 1. 从 [Releases](https://github.com/shiyidzyk/quietbox/releases) 下载最新 APK（当前为 [`quietbox-0.9.11-xhs956.apk`](https://github.com/shiyidzyk/quietbox/releases/download/v0.9.11-xhs956/quietbox-0.9.11-xhs956.apk)）并安装。
+
+> 本 fork 分发的 APK 由 Android Debug 证书签名（`8dda9e24…`）：可直接覆盖升级本 fork 上一版 `0.9.10-xhs954`；若要替换官方 `0.9.9`（证书 `eb1ef8…`），需先卸载再安装，否则会安装失败。
 2. 打开 **LSPosed 管理器**，在模块列表里启用「静盒」。
 3. 进入模块的作用域设置，勾选 **小红书**（`com.xingin.xhs`）。
 4. 打开「静盒」，确认顶部显示 **已激活**，且副标题包含 **已注入小红书**。
