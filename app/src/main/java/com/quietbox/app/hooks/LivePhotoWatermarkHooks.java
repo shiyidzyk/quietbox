@@ -22,13 +22,15 @@ import io.github.libxposed.api.XposedModule;
  * MotionPhoto 元数据，无崩溃、无 -4 失败。日志证实 {@code p32.h#a(1)→false} 与
  * {@code dg7.h.e/h set=2} 均命中，{@code zm7.j#c} 在 9.52.0 实况保存路径真实执行。
  *
- * <p>当前适配 9.53.0（9530807，见 anchors.json）：入口
- * {@code bt9.j#b(Lwy9/m;Lkl9/i;Z)V}，参数对象 {@code kl9.i} 的字段
- * a~d=String、e=Z、f=String、g=String、h=Z；开关类为 {@code zk2.h}，
- * 旧下载类为 {@code rl2.e}。9.52.1（9521801）仅做静态重定位（2026-11-05 dexsql），
- * 未真机验证；9.52.0 → 9.52.1 → 9.53.0 的历史对应关系：
- * zm7.j → ss9.j → bt9.j（入口方法 c → b）、dg7.h → cl9.i → kl9.i、
- * p32.h → wk2.h → zk2.h、g42.e → ol2.e → rl2.e。
+ * <p>9.53.0 起的旧坐标（bt9.j / kl9.i / zk2.h / rl2.e）在 9.54.0 与 9.56.0 中均已只剩类型引用、
+ * 没有类定义，属长期失效锚点；0.9.12 按 9.56.0 重新定位：入口
+ * {@code b2a.j#b(Lv7a/m;Lhu9/i;Z)V}（264 条指令，日志 {@code imageSave start}，读 feedback
+ * 全部 8 个字段），参数对象 {@code hu9.i}（字段 a~d=String、e=Z、f/g=String、h=Z，
+ * 形状与旧 kl9.i 完全一致）；开关类 {@code em2.h#a(I)Z}（79 条，遍历
+ * android_feature_close_switch_by_code 列表）；旧下载类 {@code wm2.e#d(String,Z)}。
+ * 历史对应关系：zm7.j → ss9.j → bt9.j → b2a.j（入口方法 c → b → b）、
+ * dg7.h → cl9.i → kl9.i → hu9.i、p32.h → wk2.h → zk2.h → em2.h、
+ * g42.e → ol2.e → rl2.e → wm2.e。
  *
  * <p>9.52.0 实况保存入口反汇编（历史旧名，形状与当前一致；当前类名见上）：
  * <pre>
@@ -47,34 +49,34 @@ import io.github.libxposed.api.XposedModule;
  *
  * <p>两个挂载点：
  * <ol>
- *   <li>before {@code bt9.j#b}：把 kl9.i 参数对象的 e/h 反射置 true，静态帧走 EN-01
+ *   <li>before {@code b2a.j#b}：把 hu9.i 参数对象的 e/h 反射置 true，静态帧走 EN-01
  *       同一条 Canvas 跳绘路径（e=true 同时绕过 bm8.i 的
  *       {@code if (!m && watermark == null) fail(-4)} fail-open 守卫，保存不会因此失败）。</li>
- *   <li>{@code zk2.h#a(I)Z}：仅当参数 == {@link #LIVE_PHOTO_SAVE_SWITCH_CODE}（1，dexsql
- *       确认 bt9.j#b 内 {@code const 1} 传入）时返回 false，强制走旧链路；其余 code
+ *   <li>{@code em2.h#a(I)Z}：仅当参数 == {@link #LIVE_PHOTO_SAVE_SWITCH_CODE}（1
+ *       确认 b2a.j#b 内 {@code const 1} 传入）时返回 false，强制走旧链路；其余 code
  *       一律 proceed 原值，不影响其他功能的关闭开关判断。</li>
  * </ol>
  *
- * <p>选择 zk2.h#a(1) 而不是 hook 新链路响应类 zp8.a#d() 换 URL 的原因：zp8.a 与 kl9.i
- * 无任何引用关系，换 URL 需要跨 hook 传递状态（bt9.j#b 时暂存 g、zp8.a#d 时取用），
- * 时序脆弱；zk2.h#a(1) 是链路分叉的唯一判定点，在判定处改写无状态且同时让
+ * <p>选择 em2.h#a(1) 而不是 hook 新链路换 URL 的原因：响应类与 hu9.i
+ * 无任何引用关系，换 URL 需要跨 hook 传递状态（b2a.j#b 时暂存 g、响应时取用），
+ * 时序脆弱；em2.h#a(1) 是链路分叉的唯一判定点，在判定处改写无状态且同时让
  * live_photo/save 请求不再发出。代价是 code=1 的其他读点（如有）也会读到 false——
- * 该 code 在 bt9.j#b 中的语义就是实况保存链路开关，真机验证未观察到其他影响；
+ * 该 code 在 b2a.j#b 中的语义就是实况保存链路开关，9.52.0 真机验证未观察到其他影响；
  * 宿主后续若改保存链路（如下线 livePhotoVideoPath），本功能可能失效。
  *
- * <p>签名字段语义（9.53.0 dexsql 复核，旧名 cl9.i）：kl9.i 为 8 参构造
+ * <p>签名字段语义（9.53.0 dexsql 复核，9.56.0 复核形状未变）：hu9.i 为 8 参构造
  * {@code <init>(String,String,String,String,Z,String,String,Z)}，字段 a~d=String、
  * e=Z（disableWaterMark）、f=String（livePhotoFileId）、g=String（livePhotoVideoPath）、
  * h=Z（disableAiWaterMark），全部为跨类直接 iget/iput 的公开字段，可反射改写。
  */
 final class LivePhotoWatermarkHooks {
 
-    /** 日志用短名：入口第 2 参 FeedbackDownloadImage（kl9.i），字段 e/h 为水印开关。 */
-    private static final String ENTRY_FEEDBACK = "kl9.i";
+    /** 日志用短名：入口第 2 参 FeedbackDownloadImage（9.56.0 为 hu9.i，9.53.0 为 kl9.i），字段 e/h 为水印开关。 */
+    private static final String ENTRY_FEEDBACK = "hu9.i";
 
     /**
-     * 实况保存链路开关 code：bt9.j#b 内 {@code const v5, 0x1} 传入 {@code zk2.h#a(I)Z}。
-     * zk2.h#a 的语义：android_feature_close_switch_by_code 列表含该 code → false，
+     * 实况保存链路开关 code：b2a.j#b 内 {@code const v5, 0x1} 传入 {@code em2.h#a(I)Z}。
+     * em2.h#a 的语义：android_feature_close_switch_by_code 列表含该 code → false，
      * 否则 true；默认（服务端未下发）为 true 即新链路。
      */
     static final int LIVE_PHOTO_SAVE_SWITCH_CODE = 1;
@@ -86,7 +88,7 @@ final class LivePhotoWatermarkHooks {
         Feature f = Feature.LIVE_PHOTO_WATERMARK;
         int installed = 0;
 
-        // 1) 入口改参：kl9.i.e / kl9.i.h 置 true，静态帧跳过水印绘制。
+        // 1) 入口改参：hu9.i.e / hu9.i.h 置 true，静态帧跳过水印绘制。
         installed += hookSaveEntry(module, f, cl);
 
         // 2) 链路开关：code=1 时返回 false，实况视频走旧链路（预览同源 URL）。
@@ -98,8 +100,8 @@ final class LivePhotoWatermarkHooks {
     }
 
     /**
-     * bt9.j#b before：改写 kl9.i 参数的水印开关位后按原参 proceed。
-     * 改写发生在原方法执行前（kl9.i 实例随后被传入 bm8.i 与链路判定，before 时改写生效）。
+     * b2a.j#b before：改写 hu9.i 参数的水印开关位后按原参 proceed。
+     * 改写发生在原方法执行前（hu9.i 实例随后被传入保存链路与开关判定，before 时改写生效）。
      */
     private static int hookSaveEntry(XposedModule module, Feature f, ClassLoader cl) {
         try {
@@ -136,7 +138,7 @@ final class LivePhotoWatermarkHooks {
                         HookKit.hit(module, f, ENTRY_FEEDBACK + ".e/h set=" + set);
                     }
                 } catch (Throwable t) {
-                    HookKit.error(module, f.id + " intercept error bt9.j#b", t);
+                    HookKit.error(module, f.id + " intercept error b2a.j#b", t);
                 }
                 // 改写的是参数对象内部字段，原参 proceed 即可。
                 return chain.proceed();
@@ -145,7 +147,7 @@ final class LivePhotoWatermarkHooks {
     }
 
     /**
-     * zk2.h#a(I)Z：仅 code == {@link #LIVE_PHOTO_SAVE_SWITCH_CODE} 时返回 false（旧链路），
+     * em2.h#a(I)Z：仅 code == {@link #LIVE_PHOTO_SAVE_SWITCH_CODE} 时返回 false（旧链路），
      * 其余 code 一律 proceed，避免全局返回 false 影响其他功能。
      */
     private static int hookSaveSwitch(XposedModule module, Feature f, ClassLoader cl) {
@@ -166,17 +168,17 @@ final class LivePhotoWatermarkHooks {
                                 List<Object> args = chain.getArgs();
                                 if (args.size() == 1 && args.get(0) instanceof Integer
                                         && isLivePhotoSwitchCode((Integer) args.get(0))) {
-                                    HookKit.hit(module, f, "zk2.h#a(" + args.get(0) + ") → false");
+                                    HookKit.hit(module, f, "em2.h#a(" + args.get(0) + ") → false");
                                     return Boolean.FALSE;
                                 }
                             } catch (Throwable t) {
-                                HookKit.error(module, f.id + " intercept error zk2.h#a", t);
+                                HookKit.error(module, f.id + " intercept error em2.h#a", t);
                             }
                             return chain.proceed();
                         }
                     }) ? 1 : 0;
         } catch (Throwable t) {
-            HookKit.warn(module, f.id + " skip: anchor zk2.h#a " + t);
+            HookKit.warn(module, f.id + " skip: anchor em2.h#a " + t);
             return 0;
         }
     }
@@ -187,11 +189,11 @@ final class LivePhotoWatermarkHooks {
     }
 
     /**
-     * 反射把 feedback 对象（kl9.i）的公开 boolean 字段 e（disableWaterMark）与
+     * 反射把 feedback 对象（hu9.i）的公开 boolean 字段 e（disableWaterMark）与
      * h（disableAiWaterMark）置 true。抽成纯静态方法以便 JVM 单测
      * （LivePhotoWatermarkHooksTest 用字段形状相同的替身类验证）。
      *
-     * @param target kl9.i 实例；null 或字段缺失时不动任何东西
+     * @param target hu9.i 实例；null 或字段缺失时不动任何东西
      * @return 实际置位的字段数（0~2）；target 为 null 返回 -1
      */
     static int applyFeedbackFlags(@Nullable Object target) {

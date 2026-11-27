@@ -1,5 +1,26 @@
 # 更新日志
 
+## 0.9.12 - 2026-11-27
+
+### 修复
+
+- **UI-04 更新弹窗**：`update_dialog_he` 由 9.53.0 的 `he()` 更新为 9.56.0 的 `ke()`（同版本方法名整体位移：9.54.0 `oe` → 9.56.0 `ke`，指令数同为 46）。`onCreate`（`ie(Activity,Bundle)`，1534 条）仍是唯一入口并 `finish()`，`ke()` 仅为淡出补充，缺失不再导致整项判失败。
+- **EN-03 实况图去水印**：四条锚点按 9.56.0 重新定位（0.9.11 时全部缺失）：
+  - 入口 `bt9.j#b → b2a.j#b(Lv7a/m;Lhu9/i;Z)V`（264 条指令，日志 `imageSave start`，读取 feedback 全部 8 个字段）；
+  - 参数对象 `kl9.i → hu9.i`（8 参构造形状与旧版一致：a~d String、e Z、f/g String、h Z，字段 e/h 为水印开关）；
+  - 链路开关 `zk2.h#a(I)Z → em2.h#a(I)Z`（79 条，遍历 `android_feature_close_switch_by_code` 列表）；
+  - 旧下载 `rl2.e#d → wm2.e#d(String,Z)Lio/reactivex/Observable;`。
+
+### 说明
+
+- 上述 5 条锚点自 9.53.0 起即为失效值：9.54.0 包内 `bt9.j`、`zk2.h`、`rl2.e`、`g0a.o` 已只剩类型引用、无类定义，`kl9.i` 到 9.56.0 也已消失。0.9.11 的真机诊断（3 项 `锚点未找到`）即由此而来。
+
+### 验证
+
+- `xposed-core/tools/check_anchors.py` 对 9.56.0 APK：**66/67 命中**，仅剩 EX-01 `g0a.o#invoke`（lambda 类无稳定指纹，维持 fail-open）。
+- 真机（0.9.11）：19 项 `registered`；AD-01/02、UI-05、PV-02 有命中；EX-02 面板导出 5791 个 key、读通 279 个。
+- 真机（0.9.12）：诊断回传 20 项 `registered`，UI-04 / EN-03 均挂上且无 `锚点未找到`，只剩 EX-01 未找到；AD-01 命中 2。EN-03 的落盘去水印效果尚未实测（需保存一条实况笔记）。
+
 ## 0.9.11 - 2026-11-27
 
 ### 适配

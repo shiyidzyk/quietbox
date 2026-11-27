@@ -189,11 +189,11 @@
     },
     "update_dialog_he": {
       "c": "com.xingin.update.UpdateDialogActivity",
-      "m": "he",
+      "m": "ke",
       "s": "()V",
       "feature": "UI-04",
       "critical": true,
-      "note": "更新弹窗补充入口（void skip）"
+      "note": "更新弹窗淡出入口（9.56.0 为 ke，9.54.0 为 oe；void skip）"
     },
     "ext_app_goto": {
       "c": "com.xingin.advert.spi.AdvertSpiImpl",
@@ -257,23 +257,23 @@
       "note": "MediaSaveConfig 语义 getter（可选）"
     },
     "live_photo_save_entry": {
-      "c": "bt9.j",
+      "c": "b2a.j",
       "m": "b",
-      "s": "(Lwy9/m;Lkl9/i;Z)V",
+      "s": "(Lv7a/m;Lhu9/i;Z)V",
       "feature": "EN-03",
       "critical": true,
-      "note": "实况保存入口 bt9.j#b（改 feedback 字段）"
+      "note": "实况保存入口 b2a.j#b（读 feedback 全部 8 字段，imageSave start）"
     },
     "live_photo_feedback_init": {
-      "c": "kl9.i",
+      "c": "hu9.i",
       "m": "<init>",
       "s": "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V",
       "feature": "EN-03",
       "critical": false,
-      "note": "实况下载参数形状（8 参 e/f/g/h）"
+      "note": "实况下载参数形状（8 参 a~d String、e Z、f/g String、h Z）"
     },
     "live_photo_save_switch": {
-      "c": "zk2.h",
+      "c": "em2.h",
       "m": "a",
       "s": "(I)Z",
       "feature": "EN-03",
@@ -281,7 +281,7 @@
       "note": "实况保存链路开关 code=1（返回 false 走旧链路）"
     },
     "live_photo_legacy_download": {
-      "c": "rl2.e",
+      "c": "wm2.e",
       "m": "d",
       "s": "(Ljava/lang/String;Z)Lio/reactivex/Observable;",
       "feature": "EN-03",

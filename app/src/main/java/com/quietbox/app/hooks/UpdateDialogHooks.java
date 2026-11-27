@@ -12,7 +12,7 @@ import io.github.libxposed.api.XposedModule;
  * UI-04 更新弹窗屏蔽。
  * onCreate 不能跳过：super.onCreate 只在静态 de() 内被调用一次，
  * 跳过会让 Activity.mCalled 校验抛 SuperNotCalledException。
- * 因此 onCreate 只 finish() 后照常 proceed；he() 是普通 void，可安全跳过。
+ * 因此 onCreate 只 finish() 后照常 proceed；ke() 是普通 void（9.54.0 名 oe、9.56.0 名 ke），可安全跳过。
  */
 final class UpdateDialogHooks {
 
@@ -38,7 +38,7 @@ final class UpdateDialogHooks {
             if (he == null) {
                 HookState.markNotFoundCritical(f, "锚点未找到 " + AnchorKeys.UPDATE_DIALOG_HE);
             }
-            HookKit.install(module, f, "he", he, HookKit.skipVoid(module, f, "he"));
+            HookKit.install(module, f, "ke", he, HookKit.skipVoid(module, f, "ke"));
         } catch (Throwable t) {
             HookKit.error(module, f.id + " install aborted", t);
             // install 整段抛错时 UI-04 也必须进失败横幅，不能静默。

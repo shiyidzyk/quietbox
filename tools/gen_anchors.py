@@ -162,9 +162,9 @@ ANCHORS = {
         "note": "更新弹窗 Activity onCreate（finish）",
     },
     "update_dialog_he": {
-        "c": "com.xingin.update.UpdateDialogActivity", "m": "he", "s": "()V",
+        "c": "com.xingin.update.UpdateDialogActivity", "m": "ke", "s": "()V",
         "feature": "UI-04", "critical": True,
-        "note": "更新弹窗补充入口（void skip）",
+        "note": "更新弹窗淡出入口（9.56.0 为 ke，9.54.0 为 oe；void skip）",
     },
     "ext_app_goto": {
         "c": "com.xingin.advert.spi.AdvertSpiImpl", "m": "gotoExtApp", "s": "(Landroid/net/Uri;Landroid/content/Context;Lcom/xingin/entities/ad/AdRedirectInfo;)V",
@@ -202,22 +202,22 @@ ANCHORS = {
         "note": "MediaSaveConfig 语义 getter（可选）",
     },
     "live_photo_save_entry": {
-        "c": "bt9.j", "m": "b", "s": "(Lwy9/m;Lkl9/i;Z)V",
+        "c": "b2a.j", "m": "b", "s": "(Lv7a/m;Lhu9/i;Z)V",
         "feature": "EN-03", "critical": True,
-        "note": "实况保存入口 bt9.j#b（改 feedback 字段）",
+        "note": "实况保存入口 b2a.j#b（读 feedback 全部 8 字段，imageSave start）",
     },
     "live_photo_feedback_init": {
-        "c": "kl9.i", "m": "<init>", "s": "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V",
+        "c": "hu9.i", "m": "<init>", "s": "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;Z)V",
         "feature": "EN-03", "critical": False,
-        "note": "实况下载参数形状（8 参 e/f/g/h）",
+        "note": "实况下载参数形状（8 参 a~d String、e Z、f/g String、h Z）",
     },
     "live_photo_save_switch": {
-        "c": "zk2.h", "m": "a", "s": "(I)Z",
+        "c": "em2.h", "m": "a", "s": "(I)Z",
         "feature": "EN-03", "critical": True,
         "note": "实况保存链路开关 code=1（返回 false 走旧链路）",
     },
     "live_photo_legacy_download": {
-        "c": "rl2.e", "m": "d", "s": "(Ljava/lang/String;Z)Lio/reactivex/Observable;",
+        "c": "wm2.e", "m": "d", "s": "(Ljava/lang/String;Z)Lio/reactivex/Observable;",
         "feature": "EN-03", "critical": False,
         "note": "旧链路视频下载（链路参考点）",
     },

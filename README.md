@@ -4,7 +4,7 @@
 
 基于 [libxposed](https://github.com/libxposed) Modern API 102，纯 Java Hook 实现。
 
-> 当前版本：**0.9.11**（versionCode 25）。适配小红书 **9.56.0（9560805）**：按 9.56.0 APK 重定位 19 个挂载点——9 个类整体改名（`yid.m0→drd.m0`、`sid.t→xqd.t`、`xl6.p→nn6.p`、`rab.e→zib.e`、`ca2.r→ra2.r`、`cce.i0→oke.i0`、`on8.j→wu8.j`、`on8.i→wu8.i`、`yl0.g0→cm0.g0`），另有 5 条仅签名变化（通讯录协调器、广告笔记回写、详情页广告图/视频、开屏懒加载）。`tools/check-anchors.sh` 对 9.56.0 APK 静态校验命中 **61/67**，其余 6 条（EN-03 实况图 4 条、UI-04 更新弹窗、EX-01 已删笔记）自 9.53.0 起就未定位，维持 fail-open，本次未新增失效。0.9.10-xhs954 按 9.54.0 重定位 24 个挂载点；0.9.9 按 9.53.0 重定位 21 个（7 SIG / 14 GONE）；0.9.7 按 9.52.1 重定位 31 个（11 SIG / 20 GONE）。**只支持 9.56.0，不再支持 9.54.0 及更早版本**。本版为离线静态校验 + 单测 + 构建验证，未做真机冒烟（无可用设备）。
+> 当前版本：**0.9.12**（versionCode 26）。适配小红书 **9.56.0（9560805）**。0.9.11 已按 9.56.0 重定位 19 个挂载点（9 个类整体改名、5 条签名变化、5 条同类内方法改名）；0.9.12 修复自 9.53.0 起失效的 5 条锚点——UI-04 `UpdateDialogActivity#he→#ke`，EN-03 实况图 `bt9.j#b→b2a.j#b`、`kl9.i→hu9.i`、`zk2.h#a→em2.h#a`、`rl2.e#d→wm2.e#d`，`tools/check-anchors.sh` 对 9.56.0 APK 静态校验命中 **66/67**，仅剩 EX-01（`g0a.o#invoke` lambda，无稳定指纹）维持 fail-open。**只支持 9.56.0，不再支持 9.54.0 及更早版本**。0.9.12 真机回归：诊断页回传 20 项 registered（UI-04、EN-03 均已挂上），仅 EX-01 报「锚点未找到」，AD-01 命中 2；EN-03 的实测去水印效果仍待在保存实况图后确认。
 
 > ⚠️ 本项目与小红书官方无任何关联，仅供学习、研究和个人设备使用。
 > 使用前请阅读文末的[免责声明](#免责声明)。
@@ -105,7 +105,7 @@ PV-03 另有一个子选项「同时删除 xsec_token」，不单独编号，依
 
 ## 安装
 
-1. 从 [Releases](https://github.com/shiyidzyk/quietbox/releases) 下载最新 APK（当前为 [`quietbox-0.9.11-xhs956.apk`](https://github.com/shiyidzyk/quietbox/releases/download/v0.9.11-xhs956/quietbox-0.9.11-xhs956.apk)）并安装。
+1. 从 [Releases](https://github.com/shiyidzyk/quietbox/releases) 下载最新 APK（当前为 [`quietbox-0.9.12-xhs956.apk`](https://github.com/shiyidzyk/quietbox/releases/download/v0.9.12-xhs956/quietbox-0.9.12-xhs956.apk)）并安装。
 
 > 本 fork 分发的 APK 由 Android Debug 证书签名（`8dda9e24…`）：可直接覆盖升级本 fork 上一版 `0.9.10-xhs954`；若要替换官方 `0.9.9`（证书 `eb1ef8…`），需先卸载再安装，否则会安装失败。
 2. 打开 **LSPosed 管理器**，在模块列表里启用「静盒」。
@@ -152,7 +152,7 @@ PV-03 另有一个子选项「同时删除 xsec_token」，不单独编号，依
 
 | 项目 | 状态 |
 |---|---|
-| 小红书 9.56.0（9560805） | **已适配（0.9.11）**：19 个挂载点重定位（9 个类整体改名 / 5 条签名变化 / 5 条同类内方法改名），`tools/check-anchors.sh` 静态校验 61/67 命中，6 条历史未定位锚点维持 fail-open。仅静态校验 + JVM 单测 + 构建验证，未做真机冒烟 |
+| 小红书 9.56.0（9560805） | **已适配（0.9.12）**：9.56.0 重定位 19 个挂载点 + 0.9.12 补齐 UI-04/EN-03 共 5 条历史失效锚点，`tools/check-anchors.sh` 静态校验 66/67 命中（仅 EX-01 fail-open）。真机诊断回传 20 项 registered、仅 EX-01 未找到 |
 | 小红书 9.54.0（9540805） | 0.9.10-xhs954 适配过（24 个挂载点重定位），当前版本不再声明支持 |
 | 小红书 9.52.1（9521801）及更早 | **不再支持**：不阻断运行（fail-open），横幅提示「未适配」，大部分功能可能失效 |
 | Android 10 及以上（minSdk 29） | 支持；运行记录覆盖 Android 15（模拟器）与 Android 17（0.8.0 核心回归、0.8.1 诊断修复复验），其余版本未逐一验证 |
