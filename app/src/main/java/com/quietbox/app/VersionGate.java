@@ -9,11 +9,11 @@ package com.quietbox.app;
  */
 public final class VersionGate {
 
-    /** 小红书 9.54.0（9540805）：挂载点按 9.54.0 APK 重新定位。 */
-    public static final String SUPPORTED_VERSION = "9.54.0";
+    /** 小红书 9.56.0（9560805）：挂载点按 9.56.0 APK 重新定位。 */
+    public static final String SUPPORTED_VERSION = "9.56.0";
 
-    /** 9.54.0 对应的 versionCode。 */
-    public static final long SUPPORTED_VERSION_CODE = 9540805L;
+    /** 9.56.0 对应的 versionCode。 */
+    public static final long SUPPORTED_VERSION_CODE = 9560805L;
 
     private VersionGate() {
     }

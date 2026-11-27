@@ -1,5 +1,30 @@
 # 更新日志
 
+## 0.9.11 - 2026-11-27
+
+### 适配
+
+- **小红书 9.56.0（9560805）**：按 9.56.0 APK 重新定位 19 个挂载点，覆盖 AD-01/02/05/06、PV-02/03、EN-01、AD-04。
+  - 9 个类整体改名：`yid.m0→drd.m0`、`sid.t→xqd.t`、`xl6.p→nn6.p`、`rab.e→zib.e`、`ca2.r→ra2.r`、`cce.i0→oke.i0`、`on8.j→wu8.j`、`on8.i→wu8.i`、`yl0.g0→cm0.g0`。
+  - 类内方法改名：`drd.m0#T→#U`、`#E0→#G0`、`#h0→#i0`，`xqd.t#Xd→#de`，`nn6.p#l→#o`。
+  - 签名变化（同类同名）：`ContactsSyncCoordinator#i`（`v49/l→gc9/l`）、`AdsHomeFeedManagerServiceImpl#recordAdsNoteData`（`hf7/r→oi7/r`）、`AdvertV2View#a`（`j20/b→k20/b`）、`AdvertV2View#b`（`y50/a0→z50/a0`）、`AdsIndexSpiImp#openNeedLazyHFSplashAds`（`uge/e→gpe/e`）。
+  - `search_ad_result_filter` 定位到 `cm0.g0#s`（原型新增默认参 `g70/f` 与 Kotlin `Int/Object` 尾部），指纹相似度 0.786。
+- 锚点表 `appVersion`/`versionCode` 更新为 9.56.0 / 9560805；`tools/gen_anchors.py` 的 `ANCHORS` 单一真源与 `anchors.json` 同步（此前该文件停留在 9.53.0，存在 35 处漂移，本次一并归零）。
+- `VersionGate` 支持版本改为 9.56.0（9560805）；`tools/check-mounts.sh` 的版本门禁与提示同步；`CheckMountsVersionGateTest` 的期望/漂移版本常量同步。
+- 模块版本 `0.9.11`（versionCode 25），产物 `quietbox-0.9.11-xhs956.apk`。
+
+### 验证
+
+- `tools/check-anchors.sh`（xposed-core 纯 Python DEX 校验）对 9.56.0 APK：**61/67 命中**，缺失 6 条为 9.53.0 起就未定位的 EN-03 实况图 4 条、UI-04 `UpdateDialogActivity#he`、EX-01 `g0a.o#invoke`，维持 fail-open，未新增失效。
+- 未做真机冒烟（本机无连接设备），未运行 `tools/check-mounts.sh` 与 `tools/gen_anchors.py` 的 dexsql 校验（本机无 dexsql），静态结论以上述 DEX 校验为准。
+
+## 0.9.10 - 2026-11-13
+
+### 适配
+
+- **小红书 9.54.0（9540805）**：按 9.54.0 APK 重新定位 24 个挂载点；锚点表 `appVersion`/`versionCode` 更新为 9.54.0 / 9540805，`VersionGate` 同步。
+- 分发：产物 `quietbox-0.9.10-xhs954.apk` 发布在 fork `shiyidzyk/quietbox` 的 Release `v0.9.10-xhs954`；上游 `yigenhuobah/quietbox` 已 404，README 的仓库/下载链接改指 fork。
+
 ## 0.9.9 - 2026-11-11
 
 ### 修复

@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 /**
  * 宿主版本门禁契约（纯 JVM）：tools/check-mounts.sh 读到宿主 versionName 后必须
- * 与目标版本 9.53.0 比对，不符默认硬失败（退出码 2），只有显式 --allow-version /
+ * 与目标版本 9.56.0 比对，不符默认硬失败（退出码 2），只有显式 --allow-version /
  * CHECK_MOUNTS_ALLOW_VERSION=1 才放行。
  *
  * <p>历史行为是只 echo WARN 不退出：宿主 APK 版本漂移后 check-mounts 仍 exit 0，
@@ -32,14 +32,14 @@ import java.util.regex.Pattern;
  * 1) 版本比对块确实存在、且不符时 exit 2（不是只 WARN）；
  * 2) 放行开关在 usage 与参数解析里都注册了（--allow-version + 环境变量）；
  * 3) 门禁比对的目标版本与 anchors.json 的 appVersion 一致；
- * 4) 行为验证：个别名 9.54.0 的假 APK 默认 exit 2，--allow-version 后才放行。
+ * 4) 行为验证：个别名 9.56.0 的假 APK 默认 exit 2，--allow-version 后才放行。
  */
 public class CheckMountsVersionGateTest {
 
     private static final String SCRIPT_RELATIVE = "tools/check-mounts.sh";
     private static final String ANCHORS_RELATIVE = "app/src/main/resources/anchors.json";
-    private static final String EXPECTED_VERSION = "9.54.0";
-    private static final String DRIFTED_VERSION = "9.55.0";
+    private static final String EXPECTED_VERSION = "9.56.0";
+    private static final String DRIFTED_VERSION = "9.57.0";
 
     private static final Pattern APP_VERSION =
             Pattern.compile("\"appVersion\"\\s*:\\s*\"([^\"]+)\"");
